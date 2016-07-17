@@ -1,0 +1,14 @@
+.idea/
+node_modules/
+dist/
+docs/
+build/
+*.iml
+webpack-assets.json
+webpack-stats.json
+npm-debug.log
+mapHospital.json
+/src/generators/hospital/mapHospital.js
+api/uploads/*
+/.happypack
+logs

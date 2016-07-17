@@ -1,0 +1,7 @@
+{
+  "name": "UHS",
+  "description": "Universal Health Solution",
+  "repository": "git@git.coding.net:omk/uhs.git",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["UHS"]
+}
