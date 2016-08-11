@@ -7,7 +7,7 @@
       "exec_mode": "fork_mode",
       "env": {
         "NODE_ENV": "production",
-        "APIPORT": 3051,
+        "APIPORT": 3050,
         "NODE_PATH": "./api"
       }
     }

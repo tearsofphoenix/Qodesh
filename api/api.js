@@ -15,7 +15,6 @@ import mongoose from 'mongoose';
 import path from 'path';
 import dbConfig from './actions/config';
 import {randomString} from './actions/lib/util';
-// import syncDatabase from './sync';
 import kueCreator from './kue';
 
 

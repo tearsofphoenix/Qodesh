@@ -11,12 +11,7 @@
   "main": "bin/server.js",
   "scripts": {
     "lint": "eslint -c .eslintrc api",
-    "dev": "better-npm-run dev-api",
-    "test": "snyk test && karma start",
-    "test-node": "./node_modules/mocha/bin/mocha $(find api/actions/api -name '*-test.js') --compilers js:babel-core/register",
-    "test-node-watch": "./node_modules/mocha/bin/mocha $(find api -name '*-test.js') --compilers js:babel-core/register --watch",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "dev": "better-npm-run dev-api"
   },
   "betterScripts": {
     "dev-api": {
@@ -24,7 +19,7 @@
       "env": {
         "NODE_PATH": "./api",
         "NODE_ENV": "development",
-        "APIPORT": 3051
+        "APIPORT": 3050
       }
     }
   },
@@ -44,36 +39,21 @@
     "compression": "^1.6.2",
     "connect-multiparty": "^2.0.0",
     "connect-redis": "^3.1.0",
-    "cookie-parser": "^1.4.3",
-    "cors": "^2.7.1",
-    "cron": "^1.1.0",
-    "crypto-js": "^3.1.6",
-    "eslint-plugin-react": "^4.3.0",
     "express": "^4.14.0",
     "express-session": "^1.13.0",
-    "jwt-simple": "^0.4.1",
+    "jwt-simple": "^0.5.0",
     "kue": "^0.11.1",
-    "log4js": "^0.6.36",
+    "log4js": "^0.6.38",
     "moment": "^2.12.0",
     "mongoosastic": "^4.0.2",
-    "mongoose": "4.4.10",
+    "mongoose": "4.5.8",
     "mongoose-deep-populate": "^3.0.0",
-    "multer": "^1.1.0",
-    "node-cron": "^1.1.1",
-    "oneapm": "^1.2.20",
+    "multer": "^1.2.0",
     "piping": "^0.3.2",
     "pretty-error": "^2.0.0",
     "rbac": "^4.0.1",
     "redis": "^2.6.2",
-    "serialize-javascript": "^1.2.0",
-    "serve-favicon": "^2.3.0",
-    "snyk": "^1.16.0",
-    "socket.io": "^1.4.5",
-    "superagent": "^1.8.3",
-    "supertest": "^1.2.0",
-    "urldecode": "^1.0.1",
-    "warning": "^3.0.0",
-    "xml2js": "^0.4.16"
+    "socket.io": "^1.4.5"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.2",
@@ -87,7 +67,6 @@
     "eslint-plugin-import": "^0.8.1"
   },
   "engines": {
-    "node": "5.6.0"
-  },
-  "snyk": true
+    "node": "6.2.2"
+  }
 }

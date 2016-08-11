@@ -8,8 +8,7 @@ var config;
 try {
   config = JSON.parse(babelrc);
   config.ignore = function ignoreFn(filename) {
-    if (/node_modules/.test(filename)) return true;
-    return false;
+    return !!/node_modules/.test(filename);
   }
 } catch (err) {
   console.error('==>     ERROR: Error parsing your .babelrc.');

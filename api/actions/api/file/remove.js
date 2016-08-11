@@ -6,7 +6,7 @@ import config from '../../config';
 import fs from 'fs';
 const File = mongoose.model('File');
 
-export default function remove(req) {
+export default function (req) {
 
   return new Promise((resolve, reject) => {
     const {id} = req.body;
@@ -14,14 +14,14 @@ export default function remove(req) {
       .exec((error, doc) => {
         if (error) {
           console.log(error);
-          reject({msg: '查找失败!'});
+          reject({msg: 'Fail!'});
         } else {
           if (doc) {
             fs.unlinkSync(doc.path);
             doc.remove((error) => {
               if (error) {
                 console.log(error);
-                reject({msg: '删除失败!'});
+                reject({msg: 'Fail!'});
               } else {
                 resolve({code: config.code.success});
               }

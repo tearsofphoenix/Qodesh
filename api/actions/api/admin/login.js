@@ -6,23 +6,19 @@ import mongoose from 'mongoose';
 import {getIP, genToken, kExpirePeriod} from '../../lib/auth';
 import config from '../../config';
 const Admin = mongoose.model('Admin');
-const checkcaptcha = false;
 
-export default function login(req) {
+export default function (req) {
 
   return new Promise((resolve, reject) => {
     // make async call to database
-    const email = req.body.email;
-    const password = req.body.password;
-    const captcha = req.body.captcha;
-    console.log(password);
-    const process = () => {
+    const {email, password} = req.body;
+
+    if (email && password) {
       Admin.findOne({email: email})
-        .populate('hospital doctor')
         .exec((error, doc) => {
           if (error) {
             console.log(error);
-            reject({msg: '登陆失败!'});
+            reject({msg: 'Login Failed!'});
           } else {
             if (doc) {
               if (doc.validPassword(password)) {
@@ -35,28 +31,15 @@ export default function login(req) {
                   access_token: genToken(doc.id, getIP(req))
                 });
               } else {
-                reject({msg: '密码错误'});
+                reject({msg: 'Password Error'});
               }
             } else {
-              reject({msg: '邮箱不存在'});
+              reject({msg: 'Email Not Exists!'});
             }
           }
         });
-    };
-
-    if (email && password) {
-
-      if (checkcaptcha) {
-        if (req.session.captcha === captcha) {
-          process();
-        } else {
-          reject({msg: '验证码错误'});
-        }
-      } else {
-        process();
-      }
     } else {
-      reject({msg: '缺少参数'});
+      reject({msg: 'Missing Parameters'});
     }
   });
 }

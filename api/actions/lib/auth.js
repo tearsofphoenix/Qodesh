@@ -11,52 +11,17 @@ export const kExpirePeriod = 30 * 60 * 1000; // half an hour
 
 import RBAC from 'rbac';
 const rbac = new RBAC({
-  roles: ['superadmin', 'admin', 'director', 'doctor', 'nurse'],
+  roles: ['superadmin', 'admin'],
   permissions: {
     message: ['read', 'list'],
-    admin: ['create', 'update', 'search', 'logout', 'delete'],
-    disease: ['create', 'search', 'delete'],
-    doctor: ['create', 'update', 'search', 'delete'],
-    drug: ['create', 'update', 'search', 'delete'],
-    hospital: ['create', 'update', 'search', 'delete'],
-    labor: ['create', 'search', 'delete'],
-    medicare: ['create', 'search', 'delete'],
-    order: ['create', 'search', 'delete'],
-    patient: ['create', 'update', 'search', 'delete'],
-    prescription: ['create', 'search', 'delete'],
-    record: ['create', 'search', 'delete'],
-    sheet: ['create', 'search', 'delete'],
-    sheetresult: ['create', 'search', 'delete'],
-    schedule: ['create', 'search', 'delete']
+    admin: ['create', 'update', 'search', 'logout', 'delete']
   },
   grants: {
-    nurse: [
-      'list_message', 'read_message',
-      'create_medicare', 'search_medicare',
-      'create_patient', 'update_patient', 'search_patient',
-      'create_sheet', 'search_sheet',
-      'create_sheetresult', 'search_sheetresult',
-      'search_doctor'
-    ],
-    doctor: [
-      'nurse',
-      'create_disease', 'search_disease', 'delete_disease',
-      'update_doctor',
-      'create_order', 'search_order', 'delete_order',
-      'create_prescription', 'search_prescription', 'delete_prescription',
-      'create_record', 'search_record', 'delete_record'
-    ],
-    director: ['doctor',
-      'create_doctor', 'search_doctor', 'delete_doctor', 'search_hospital',
-      'create_schedule', 'search_schedule', 'delete_schedule'
-    ],
-    admin: ['director',
-      'create_hospital', 'update_hospital', 'delete_hospital',
-      'create_labor', 'search_labor', 'delete_labor',
+    admin: [
       'update_admin', 'logout_admin', 'search_admin'
     ],
-    superadmin: ['admin', 'create_admin', 'delete_admin',
-      'create_drug', 'update_drug', 'search_drug', 'delete_drug'
+    superadmin: ['admin',
+      'create_admin', 'delete_admin'
     ]
   }
 }, function (err, rbac) {
@@ -86,7 +51,7 @@ export function roleAuth(req, action, resource, next) {
       const now = Date.now();
       console.log('will check', exp, now);
       if (exp < now) {
-        reject({msg: '会话已过期!', redirect: '/login', status: 410});
+        reject({msg: 'Session Expired!', redirect: '/login', status: 410});
       } else {
         req.session.exp = now + kExpirePeriod; // add half an hour
         console.log('will update', req.session.exp, now);
@@ -107,29 +72,12 @@ export function roleAuth(req, action, resource, next) {
         }
       }
     } else {
-      reject({msg: '请登陆!', redirect: '/login', status: 301});
+      reject({msg: 'Please Login!', redirect: '/login', status: 301});
     }
   }
 }
-
-export function roleAuthPromise(req, action, resource, next) {
-  return new Promise(roleAuth(req, action, resource, next));
-}
-
-var addRoleFilter = function (req, args, field) {
-  const user = req.user;
-  if (user) {
-    if (user.role === 'director') {
-      if (!field) {
-        field = 'hospital';
-      }
-      args[field] = user.hospital;
-    }
-  }
-};
 
 export function genToken(userID, ext) {
-
   const expires = moment().add(4, 'hours').valueOf();
   return jwtEncode({
     iss: userID,
@@ -148,6 +96,5 @@ export function getIP(req) {
 
 export default {
   genToken: genToken,
-  getIP: getIP,
-  addRoleFilter: addRoleFilter
+  getIP: getIP
 };

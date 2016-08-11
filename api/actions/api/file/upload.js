@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import config from '../../config';
 const File = mongoose.model('File');
 
-export default function upload(req) {
+export default function (req) {
 
   return new Promise((resolve, reject) => {
     const {file} = req;
